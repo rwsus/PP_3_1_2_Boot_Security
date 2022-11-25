@@ -13,7 +13,6 @@ import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -27,6 +26,7 @@ public class UserDaoImpl implements UserDao {
     public void saveUser(String userName, String password, Collection<Role> roles,
                          String name, String lastName, int age) {
         User user = new User(userName, password, roles, name, lastName, age);
+
         if (!roles.isEmpty()) {
             roles.forEach(r -> entityManager.persist(r));
         }
@@ -36,6 +36,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void updateUser(Long id, User updatedUser) {
         User userToBeUpdated = findUserById(id);
+
         userToBeUpdated.setUsername(updatedUser.getUsername());
         userToBeUpdated.setPassword(updatedUser.getPassword());
         userToBeUpdated.setRoles(updatedUser.getRoles());
@@ -49,9 +50,10 @@ public class UserDaoImpl implements UserDao {
     public User findUserByUsername(String userName) {
         TypedQuery<User> query = entityManager.createQuery
                 ("select u from User u where u.username = :userNameParam", User.class);
+
         query.setParameter("userNameParam", userName);
-        List<User>results = query.getResultList();
-        if(results.isEmpty()) {
+        List<User> results = query.getResultList();
+        if (results.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
         return results.get(0);

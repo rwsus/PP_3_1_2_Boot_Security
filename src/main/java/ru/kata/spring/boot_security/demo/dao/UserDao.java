@@ -11,11 +11,12 @@ public interface UserDao {
     List<User> getAllUsers();
 
     void saveUser(String userName, String password, Collection<Role> roles, String name, String lastName, int age);
+
     void updateUser(Long id, User updatedUser);
 
     User findUserById(Long id);
-    User findUserByUsername(String userName);
 
+    User findUserByUsername(String userName);
 
     void removeUserById(long id);
 

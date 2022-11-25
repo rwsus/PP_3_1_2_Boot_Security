@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface RoleDao {
     List<Role> getRoles();
+
     Role getRole(Long id);
 }

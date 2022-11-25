@@ -24,7 +24,6 @@ public class User implements UserDetails {
     private String lastName;
     @Column(name = "age")
     private int age;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
@@ -34,10 +33,11 @@ public class User implements UserDetails {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
+
     public User() {
     }
 
-    public User(String userName, String password, Collection <Role> roles, String name, String lastName, int age) {
+    public User(String userName, String password, Collection<Role> roles, String name, String lastName, int age) {
         this.username = userName;
         this.password = password;
         this.roles = roles;
@@ -134,7 +134,8 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName);
+        return age == user.age && Objects.equals(id, user.id) && Objects.equals(username, user.username)
+                && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName);
     }
 
     @Override

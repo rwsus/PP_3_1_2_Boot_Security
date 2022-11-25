@@ -32,7 +32,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional
-    public void saveUser(String userName, String password, Collection<Role> roles, String name, String lastName, int age) {
+    public void saveUser(String userName, String password, Collection<Role> roles,
+                         String name, String lastName, int age) {
         userDao.saveUser(userName, password, roles, name, lastName, age);
     }
 
