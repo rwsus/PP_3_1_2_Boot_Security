@@ -2,7 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,15 +19,13 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
+    @Lazy
     @Autowired
-    private ApplicationContext context;
-    PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,15 +38,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void saveUser(String userName, String password, Collection<Role> roles,
                          String name, String lastName, int age) {
-        passwordEncoder = context.getBean(PasswordEncoder.class);
-        password = passwordEncoder.encode(password);
-        userDao.saveUser(userName, password, roles, name, lastName, age);
+        userDao.saveUser(userName, passwordEncoder.encode(password), roles, name, lastName, age);
     }
 
     @Override
     @Transactional
     public void updateUser(Long id, User updatedUser) {
-        passwordEncoder = context.getBean(PasswordEncoder.class);
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         userDao.updateUser(id, updatedUser);
     }
